@@ -1,8 +1,9 @@
 import 'package:ditonton/data/models/genre_model.dart';
+import 'package:equatable/equatable.dart';
 
 import 'genre.dart';
 
-class TvDetail {
+class TvDetail extends Equatable {
     TvDetail({
         required this.backdropPath,
         required this.episodeRunTime,
@@ -46,5 +47,20 @@ class TvDetail {
     String posterPath;
     double voteAverage;
     int voteCount;
+    
+      @override
+            List<Object?> get props => [
+        backdropPath,
+        firstAirDate,
+        genres,
+        id,
+        originalName,
+        overview,
+        posterPath,
+        popularity,
+        name,
+        voteAverage,
+        voteCount
+      ];
 
 }

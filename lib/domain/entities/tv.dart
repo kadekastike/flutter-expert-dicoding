@@ -15,6 +15,13 @@ class TV extends Equatable {
         required this.voteCount,
     });
 
+    TV.watchlist({
+      required this.id,
+      required this.overview,
+      required this.posterPath,
+      required this.name
+    });
+
     String? backdropPath;
     DateTime? firstAirDate;
     List<int>? genreIds;
