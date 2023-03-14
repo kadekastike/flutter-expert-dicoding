@@ -21,10 +21,10 @@ class _WatchlistPageState extends State<WatchlistPage> with RouteAware {
   void initState() {
     super.initState();
     Future.microtask(() {
-      Provider.of<WatchlistMovieNotifier>(context,listen: false)
-        .fetchWatchlistMovies();
+      Provider.of<WatchlistMovieNotifier>(context, listen: false)
+          .fetchWatchlistMovies();
       Provider.of<WatchlistTvNotifier>(context, listen: false)
-        .fetchWatchlistTv();
+          .fetchWatchlistTv();
     });
   }
 
@@ -37,31 +37,28 @@ class _WatchlistPageState extends State<WatchlistPage> with RouteAware {
   void didPopNext() {
     Provider.of<WatchlistMovieNotifier>(context, listen: false)
         .fetchWatchlistMovies();
-    Provider.of<WatchlistTvNotifier>(context, listen: false)
-        .fetchWatchlistTv();
+    Provider.of<WatchlistTvNotifier>(context, listen: false).fetchWatchlistTv();
   }
+
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Watchlist'),
-            bottom: const TabBar(
-              tabs: [
-                Tab(text: 'Movies'),
-                Tab(text: 'Tv Series'),
-              ] ),
-          ),
-          body: TabBarView(
-            children: [
-              MovieWatchlist(),
-              TvWatchlist(),
-            ]),
-          ),
-        )
-    );
+        child: DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Watchlist'),
+          bottom: const TabBar(tabs: [
+            Tab(text: 'Movies'),
+            Tab(text: 'Tv Series'),
+          ]),
+        ),
+        body: TabBarView(children: [
+          MovieWatchlist(),
+          TvWatchlist(),
+        ]),
+      ),
+    ));
   }
 }
 
@@ -69,14 +66,19 @@ class MovieWatchlist extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Consumer<WatchlistMovieNotifier>(
-          builder: (context, data, child) {
-            if (data.watchlistState == RequestState.Loading) {
+      padding: const EdgeInsets.all(8.0),
+      child: Consumer<WatchlistMovieNotifier>(
+        builder: (context, data, child) {
+          if (data.watchlistState == RequestState.Loading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (data.watchlistState == RequestState.Loaded) {
+            if (data.watchlistMovies.isEmpty) {
               return Center(
-                child: CircularProgressIndicator(),
+                child: Text("Tidak Ada Watchlist"),
               );
-            } else if (data.watchlistState == RequestState.Loaded) {
+            } else {
               return ListView.builder(
                 itemBuilder: (context, index) {
                   final movie = data.watchlistMovies[index];
@@ -84,31 +86,36 @@ class MovieWatchlist extends StatelessWidget {
                 },
                 itemCount: data.watchlistMovies.length,
               );
-            } else {
-              return Center(
-                key: Key('error_message'),
-                child: Text(data.message),
-              );
             }
-          },
-        ),
-      );
+          } else {
+            return Center(
+              key: Key('error_message'),
+              child: Text(data.message),
+            );
+          }
+        },
+      ),
+    );
   }
-
 }
 
 class TvWatchlist extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Consumer<WatchlistTvNotifier>(
-          builder: (context, data, child) {
-            if (data.watchlistTvState == RequestState.Loading) {
+      padding: const EdgeInsets.all(8.0),
+      child: Consumer<WatchlistTvNotifier>(
+        builder: (context, data, child) {
+          if (data.watchlistTvState == RequestState.Loading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (data.watchlistTvState == RequestState.Loaded) {
+            if (data.watchlistTv.isEmpty) {
               return Center(
-                child: CircularProgressIndicator(),
+                child: Text("Tidak Ada Watchlist"),
               );
-            } else if (data.watchlistTvState == RequestState.Loaded) {
+            } else {
               return ListView.builder(
                 itemBuilder: (context, index) {
                   final tv = data.watchlistTv[index];
@@ -116,15 +123,15 @@ class TvWatchlist extends StatelessWidget {
                 },
                 itemCount: data.watchlistTv.length,
               );
-            } else {
-              return Center(
-                key: Key('error_message'),
-                child: Text(data.message),
-              );
             }
-          },
-        ),
-      );
+          } else {
+            return Center(
+              key: Key('error_message'),
+              child: Text(data.message),
+            );
+          }
+        },
+      ),
+    );
   }
-
 }
