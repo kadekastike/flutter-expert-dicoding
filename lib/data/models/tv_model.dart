@@ -21,7 +21,7 @@ class TvModel extends Equatable {
     });
 
     String? backdropPath;
-    DateTime firstAirDate;
+    String firstAirDate;
     List<int> genreIds;
     int id;
     // OriginalLanguage originalLanguage;
@@ -40,7 +40,7 @@ class TvModel extends Equatable {
 
     factory TvModel.fromJson(Map<String, dynamic> json) => TvModel(
         backdropPath: json["backdrop_path"],
-        firstAirDate: DateTime.parse(json["first_air_date"]),
+        firstAirDate: json["first_air_date"] ,
         genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
         id: json["id"],
         // originalLanguage: originalLanguageValues.map[json["original_language"]],
@@ -56,7 +56,7 @@ class TvModel extends Equatable {
 
     Map<String, dynamic> toJson() => {
         "backdrop_path": backdropPath,
-        "first_air_date": "${firstAirDate.year.toString().padLeft(4, '0')}-${firstAirDate.month.toString().padLeft(2, '0')}-${firstAirDate.day.toString().padLeft(2, '0')}",
+        "first_air_date": firstAirDate,
         "genre_ids": List<dynamic>.from(genreIds.map((x) => x)),
         "id": id,
         // "original_language": originalLanguageValues.reverse[originalLanguage],

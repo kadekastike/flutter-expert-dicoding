@@ -29,12 +29,12 @@ class TvDetail extends Equatable {
 
     String backdropPath;
     List<int> episodeRunTime;
-    DateTime firstAirDate;
+    String firstAirDate;
     List<Genre> genres;
     String homepage;
     int id;
     List<String> languages;
-    DateTime lastAirDate;
+    String lastAirDate;
     String name;
     dynamic nextEpisodeToAir;
     int numberOfEpisodes;
