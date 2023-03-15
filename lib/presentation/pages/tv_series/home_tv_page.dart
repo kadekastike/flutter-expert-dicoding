@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../common/constants.dart';
 import '../../../common/state_enum.dart';
+import 'on_the_air_page.dart';
 
 class TvHomePage extends StatefulWidget {
   static const ROUTE_NAME = '/home-tv';
@@ -49,10 +50,11 @@ class _TvHomePageState extends State<TvHomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'On The Air',
-                  style: kHeading6,
-                ),
+                _buildSubHeading(
+              title: "On The Air",
+              onTap: () => {
+                Navigator.pushNamed(context, OnTheAirPage.ROUTE_NAME)
+                }),
           Consumer<TvListNotifier>(builder: (context, data, _) {
             final state = data.onAirTvState;
             if (state == RequestState.Loading) {

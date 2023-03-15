@@ -7,6 +7,7 @@ import 'package:ditonton/presentation/pages/movies/popular_movies_page.dart';
 import 'package:ditonton/presentation/pages/movies/search_page.dart';
 import 'package:ditonton/presentation/pages/movies/top_rated_movies_page.dart';
 import 'package:ditonton/presentation/pages/tv_series/home_tv_page.dart';
+import 'package:ditonton/presentation/pages/tv_series/on_the_air_page.dart';
 import 'package:ditonton/presentation/pages/tv_series/popular_tv_page.dart';
 import 'package:ditonton/presentation/pages/tv_series/top_rated_tv.dart';
 import 'package:ditonton/presentation/pages/tv_series/tv_detail_page.dart';
@@ -19,6 +20,7 @@ import 'package:ditonton/presentation/provider/movies/movie_search_notifier.dart
 import 'package:ditonton/presentation/provider/movies/popular_movies_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/top_rated_movies_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/watchlist_movie_notifier.dart';
+import 'package:ditonton/presentation/provider/tv_series/on_the_air_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series/popular_tv_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series/top_rated_tv_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series/tv_detail_notifier.dart';
@@ -61,6 +63,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => di.locator<TvListNotifier>()
         ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<OnTheAirNotifier>()
+          ),
         ChangeNotifierProvider(
           create: (_) => di.locator<PopularTvNotifier>()
         ),
@@ -115,6 +120,8 @@ class MyApp extends StatelessWidget {
                 builder: (_) => DetailTvPage(id: id),
                 settings: settings,
                 );
+            case OnTheAirPage.ROUTE_NAME:
+              return MaterialPageRoute(builder: (_) => OnTheAirPage());
             case PopularTvPage.ROUTE_NAME:
               return MaterialPageRoute(builder: (_) => PopularTvPage());
             case TopRatedTvPage.ROUTE_NAME: 
