@@ -1,7 +1,6 @@
-import 'package:ditonton/presentation/provider/tv_series/top_rated_tv_notifier.dart';
+import 'package:ditonton/presentation/bloc/tv/top%20rated%20tv/top_rated_tv_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../../common/state_enum.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../widgets/tv_card_list.dart';
 
 class TopRatedTvPage extends StatefulWidget {
@@ -17,10 +16,9 @@ class _TopRatedTvPageState extends State<TopRatedTvPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => 
-      Provider.of<TopRatedTvNotifier>(context, listen: false)
-        .fetchTopRatedTv());
+    Future.microtask(() => context.read<TopRatedTvBloc>().add(LoadTopRatedTv()));
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,24 +27,29 @@ class _TopRatedTvPageState extends State<TopRatedTvPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<TopRatedTvNotifier>(
-          builder: (builder, data, child) {
-            if (data.topRatedTvState == RequestState.Loading) {
+        child: BlocBuilder<TopRatedTvBloc, TopRatedTvState>(
+          builder: (builder, state) {
+            if (state is TopRatedTvLoading) {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (data.topRatedTvState == RequestState.Loaded) {
+            } else if (state is TopRatedTvHasData) {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  final topRated = data.topRatedTv[index];
+                  final topRated = state.topRatedTvData[index];
                   return TvCard(topRated);
                 },
-                itemCount: data.topRatedTv.length,
+                itemCount: state.topRatedTvData.length,
               );
-            } else {
+            } else if (state is TopRatedTvError) {
+              return Center(
+                child: Text(state.message),
+              );
+            }
+            else {
               return Center(
                 key: Key('error_message'),
-                child: Text(data.message),
+                child: Text('Data gagal dimuat'),
               );
             }
           }),

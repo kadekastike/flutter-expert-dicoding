@@ -29,13 +29,13 @@ import 'package:ditonton/domain/usecases/tv_series/remove_tv_watchlist.dart';
 import 'package:ditonton/domain/usecases/tv_series/save_watchlist_tv.dart';
 import 'package:ditonton/domain/usecases/tv_series/search_tv.dart';
 import 'package:ditonton/presentation/bloc/tv/on%20the%20air/tv_on_air_bloc.dart';
+import 'package:ditonton/presentation/bloc/tv/top%20rated%20tv/top_rated_tv_bloc.dart';
 import 'package:ditonton/presentation/provider/movies/movie_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/movie_list_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/movie_search_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/popular_movies_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/top_rated_movies_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/watchlist_movie_notifier.dart';
-import 'package:ditonton/presentation/provider/tv_series/top_rated_tv_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series/tv_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series/tv_list_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series/tv_search_notifier.dart';
@@ -93,19 +93,15 @@ void init() {
       getTopRatedTv: locator(),
     ), 
   );
-  // locator.registerFactory(
-  //   () => OnTheAirNotifier(
-  //     getOnAirTv: locator()
-  //     ),
-  // );
+
   locator.registerFactory(
     () => TvOnAirBloc(
       locator()
     ),
   );
   locator.registerFactory(
-    () => TopRatedTvNotifier(
-      getTopRatedTv: locator(),
+    () => TopRatedTvBloc(
+      locator(),
       ),
   );
   locator.registerFactory(

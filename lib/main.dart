@@ -2,6 +2,7 @@ import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/utils.dart';
 import 'package:ditonton/presentation/bloc/tv/on%20the%20air/tv_on_air_bloc.dart';
 import 'package:ditonton/presentation/bloc/tv/popular%20tv/popular_tv_bloc.dart';
+import 'package:ditonton/presentation/bloc/tv/top%20rated%20tv/top_rated_tv_bloc.dart';
 import 'package:ditonton/presentation/pages/about_page.dart';
 import 'package:ditonton/presentation/pages/movies/movie_detail_page.dart';
 import 'package:ditonton/presentation/pages/movies/home_movie_page.dart';
@@ -22,8 +23,6 @@ import 'package:ditonton/presentation/provider/movies/movie_search_notifier.dart
 import 'package:ditonton/presentation/provider/movies/popular_movies_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/top_rated_movies_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/watchlist_movie_notifier.dart';
-import 'package:ditonton/presentation/provider/tv_series/popular_tv_notifier.dart';
-import 'package:ditonton/presentation/provider/tv_series/top_rated_tv_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series/tv_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series/tv_list_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series/tv_search_notifier.dart';
@@ -67,9 +66,6 @@ class MyApp extends StatelessWidget {
           create: (_) => di.locator<TvListNotifier>()
         ),
         ChangeNotifierProvider(
-          create: (_) => di.locator<TopRatedTvNotifier>()
-        ),
-        ChangeNotifierProvider(
           create: (_) => di.locator<TvDetailNotifier>()
         ),
         ChangeNotifierProvider(
@@ -81,7 +77,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => di.locator<TvOnAirBloc>()),
         BlocProvider(
-          create: (_) => di.locator<PopularTvBloc>())
+          create: (_) => di.locator<PopularTvBloc>()),
+        BlocProvider(
+          create: (_) => di.locator<TopRatedTvBloc>())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

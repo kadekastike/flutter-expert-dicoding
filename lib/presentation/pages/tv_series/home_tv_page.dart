@@ -2,17 +2,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ditonton/domain/entities/tv.dart';
 import 'package:ditonton/presentation/bloc/tv/on%20the%20air/tv_on_air_bloc.dart';
 import 'package:ditonton/presentation/bloc/tv/popular%20tv/popular_tv_bloc.dart';
+import 'package:ditonton/presentation/bloc/tv/top%20rated%20tv/top_rated_tv_bloc.dart';
 import 'package:ditonton/presentation/pages/tv_series/popular_tv_page.dart';
 import 'package:ditonton/presentation/pages/tv_series/top_rated_tv.dart';
 import 'package:ditonton/presentation/pages/tv_series/tv_detail_page.dart';
 import 'package:ditonton/presentation/pages/tv_series/tv_search_page.dart';
-import 'package:ditonton/presentation/provider/tv_series/tv_list_notifier.dart';
 import 'package:ditonton/presentation/widgets/navigation_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 import '../../../common/constants.dart';
-import '../../../common/state_enum.dart';
 import 'on_the_air_page.dart';
 
 class TvHomePage extends StatefulWidget {
@@ -26,12 +24,11 @@ class _TvHomePageState extends State<TvHomePage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => Provider.of<TvListNotifier>(context, listen: false)
-      ..fetchTopRatedTv());
-    Future.microtask(() { 
-    context.read<TvOnAirBloc>().add(LoadOnAirTv());
-    context.read<PopularTvBloc>().add(LoadPopularTv());
-  });
+    Future.microtask(() {
+      context.read<TvOnAirBloc>().add(LoadOnAirTv());
+      context.read<PopularTvBloc>().add(LoadPopularTv());
+      context.read<TopRatedTvBloc>().add(LoadTopRatedTv());
+    });
   }
 
   @override
@@ -52,16 +49,16 @@ class _TvHomePageState extends State<TvHomePage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildSubHeading(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          _buildSubHeading(
               title: "On The Air",
-              onTap: () => {
-                Navigator.pushNamed(context, OnTheAirPage.ROUTE_NAME)
-                }),
-          BlocBuilder<TvOnAirBloc, TvOnAirState>(
-            builder: (context, state,) {
+              onTap: () =>
+                  {Navigator.pushNamed(context, OnTheAirPage.ROUTE_NAME)}),
+          BlocBuilder<TvOnAirBloc, TvOnAirState>(builder: (
+            context,
+            state,
+          ) {
             if (state is TvOnAirLoading) {
               return Center(
                 child: CircularProgressIndicator(),
@@ -77,11 +74,9 @@ class _TvHomePageState extends State<TvHomePage> {
           }),
           _buildSubHeading(
               title: "Popular",
-              onTap: () => {
-                Navigator.pushNamed(context, PopularTvPage.ROUTE_NAME)
-                }),
-           BlocBuilder<PopularTvBloc, PopularTvState>
-           (builder: (context, state) {
+              onTap: () =>
+                  {Navigator.pushNamed(context, PopularTvPage.ROUTE_NAME)}),
+          BlocBuilder<PopularTvBloc, PopularTvState>(builder: (context, state) {
             if (state is PopularTvLoading) {
               return Center(
                 child: CircularProgressIndicator(),
@@ -90,24 +85,26 @@ class _TvHomePageState extends State<TvHomePage> {
               return TvList(state.popularTvData);
             } else if (state is PopularTvError) {
               return Text(state.message);
-            } else  {
+            } else {
               return Text('Failed');
             }
           }),
           _buildSubHeading(
               title: "Top Rated",
-              onTap: () => {
-                Navigator.pushNamed(context, TopRatedTvPage.ROUTE_NAME)
-                }),
-           Consumer<TvListNotifier>(builder: (context, data, _) {
-            final state = data.topRatedTvState;
-            if (state == RequestState.Loading) {
+              onTap: () =>
+                  {Navigator.pushNamed(context, TopRatedTvPage.ROUTE_NAME)}),
+          BlocBuilder<TopRatedTvBloc, TopRatedTvState>
+          (builder: (context, state) {
+            if (state is TopRatedTvLoading) {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (state == RequestState.Loaded) {
-              return TvList(data.topRatedTv);
-            } else {
+            } else if (state is TopRatedTvHasData) {
+              return TvList(state.topRatedTvData);
+            } else if (state is TopRatedTvError) {
+              return Text(state.message);
+            }
+             else {
               return Text('Failed');
             }
           }),
