@@ -1,56 +1,58 @@
-import 'package:ditonton/presentation/provider/tv_series/on_the_air_notifier.dart';
+import 'package:ditonton/presentation/bloc/tv/on%20the%20air/tv_on_air_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../../common/state_enum.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../widgets/tv_card_list.dart';
 
 class OnTheAirPage extends StatefulWidget {
   const OnTheAirPage({super.key});
 
+  static const ROUTE_NAME = '/on-the-air';
+
   @override
   State<OnTheAirPage> createState() => _OnTheAirPageState();
-
-  static const ROUTE_NAME = '/on-the-air';
 }
 
 class _OnTheAirPageState extends State<OnTheAirPage> {
-  @override
+   @override
   void initState() {
     super.initState();
-    Future.microtask(
-      () => Provider.of<OnTheAirNotifier>(context, listen: false)
-        .fetchOnTheAirTv()
-    );
+    Future.microtask(() => context.read<TvOnAirBloc>().add(LoadOnAirTv()));
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            appBar: AppBar(
+      appBar: AppBar(
         title: Text('On The Air TV'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<OnTheAirNotifier>(
-          builder: (context, data, child) {
-            if (data.onTheAirTvState == RequestState.Loading) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (data.onTheAirTvState == RequestState.Loaded) {
-              return ListView.builder(
-                itemBuilder: (context, index) {
-                  final tvData = data.onTheAir[index];
-                  return TvCard(tvData);
-                },
-                itemCount: data.onTheAir.length,
-              );
-            } else {
-              return Center(
-                key: Key('error_message'),
-                child: Text(data.message),
-              );
-            }
-          }),
+        child:
+            BlocBuilder<TvOnAirBloc, TvOnAirState>(
+              builder: (context, state) {
+              if (state is TvOnAirLoading) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is TvOnAirHasData) {
+                final result = state.result;
+                return ListView.builder(
+                  itemBuilder: (context, index) {
+                    final tvData = result[index];
+                    return TvCard(tvData);
+                  },
+                  itemCount: result.length,
+                );
+              } else if (state is TvOnAirError) {
+                return Center(
+                  child: Text(state.message),
+                );
+              } else {
+                return Expanded(
+                  child: Container(),
+                );
+              }
+        }),
       ),
     );
   }

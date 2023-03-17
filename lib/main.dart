@@ -1,5 +1,6 @@
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/utils.dart';
+import 'package:ditonton/presentation/bloc/tv/on%20the%20air/tv_on_air_bloc.dart';
 import 'package:ditonton/presentation/pages/about_page.dart';
 import 'package:ditonton/presentation/pages/movies/movie_detail_page.dart';
 import 'package:ditonton/presentation/pages/movies/home_movie_page.dart';
@@ -20,7 +21,6 @@ import 'package:ditonton/presentation/provider/movies/movie_search_notifier.dart
 import 'package:ditonton/presentation/provider/movies/popular_movies_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/top_rated_movies_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/watchlist_movie_notifier.dart';
-import 'package:ditonton/presentation/provider/tv_series/on_the_air_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series/popular_tv_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series/top_rated_tv_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series/tv_detail_notifier.dart';
@@ -29,10 +29,12 @@ import 'package:ditonton/presentation/provider/tv_series/tv_search_notifier.dart
 import 'package:ditonton/presentation/provider/tv_series/watchlist_tv_notifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:ditonton/injection.dart' as di;
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   di.init();
   runApp(MyApp());
 }
@@ -63,9 +65,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => di.locator<TvListNotifier>()
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<OnTheAirNotifier>()
-          ),
+        // ChangeNotifierProvider(
+        //   create: (_) => di.locator<OnTheAirNotifier>()
+        //   ),
         ChangeNotifierProvider(
           create: (_) => di.locator<PopularTvNotifier>()
         ),
@@ -81,6 +83,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => di.locator<WatchlistTvNotifier>()
         ),
+        BlocProvider(
+          create: (_) => di.locator<TvOnAirBloc>())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

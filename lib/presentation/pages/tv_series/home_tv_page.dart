@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ditonton/domain/entities/tv.dart';
+import 'package:ditonton/presentation/bloc/tv/on%20the%20air/tv_on_air_bloc.dart';
 import 'package:ditonton/presentation/pages/tv_series/popular_tv_page.dart';
 import 'package:ditonton/presentation/pages/tv_series/top_rated_tv.dart';
 import 'package:ditonton/presentation/pages/tv_series/tv_detail_page.dart';
@@ -7,6 +8,7 @@ import 'package:ditonton/presentation/pages/tv_series/tv_search_page.dart';
 import 'package:ditonton/presentation/provider/tv_series/tv_list_notifier.dart';
 import 'package:ditonton/presentation/widgets/navigation_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import '../../../common/constants.dart';
 import '../../../common/state_enum.dart';
@@ -24,9 +26,9 @@ class _TvHomePageState extends State<TvHomePage> {
   void initState() {
     super.initState();
     Future.microtask(() => Provider.of<TvListNotifier>(context, listen: false)
-      ..fetchOnAirTv()
       ..fetchPopularTv()
       ..fetchTopRatedTv());
+    Future.microtask(() => context.read<TvOnAirBloc>().add(LoadOnAirTv()));
   }
 
   @override
@@ -55,14 +57,17 @@ class _TvHomePageState extends State<TvHomePage> {
               onTap: () => {
                 Navigator.pushNamed(context, OnTheAirPage.ROUTE_NAME)
                 }),
-          Consumer<TvListNotifier>(builder: (context, data, _) {
-            final state = data.onAirTvState;
-            if (state == RequestState.Loading) {
+          BlocBuilder<TvOnAirBloc, TvOnAirState>(
+            builder: (context, state,) {
+            if (state is TvOnAirLoading) {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (state == RequestState.Loaded) {
-              return TvList(data.onAirTv);
+            } else if (state is TvOnAirHasData) {
+              final data = state.result;
+              return TvList(data);
+            } else if (state is TvOnAirError) {
+              return Text(state.message);
             } else {
               return Text('Failed');
             }
