@@ -35,15 +35,15 @@ import 'package:ditonton/presentation/provider/movies/movie_search_notifier.dart
 import 'package:ditonton/presentation/provider/movies/popular_movies_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/top_rated_movies_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/watchlist_movie_notifier.dart';
-import 'package:ditonton/presentation/provider/tv_series/popular_tv_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series/top_rated_tv_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series/tv_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series/tv_list_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series/tv_search_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series/watchlist_tv_notifier.dart';
-import 'package:http/http.dart' as http;
 import 'package:get_it/get_it.dart';
 import 'package:http/io_client.dart';
+
+import 'presentation/bloc/tv/popular tv/popular_tv_bloc.dart';
 
 final locator = GetIt.instance;
 
@@ -109,8 +109,8 @@ void init() {
       ),
   );
   locator.registerFactory(
-    () => PopularTvNotifier(
-      getPopularTv: locator(),
+    () => PopularTvBloc(
+      locator(),
     ),
   );
   locator.registerFactory(

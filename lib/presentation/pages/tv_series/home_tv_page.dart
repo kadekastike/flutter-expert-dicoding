@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ditonton/domain/entities/tv.dart';
 import 'package:ditonton/presentation/bloc/tv/on%20the%20air/tv_on_air_bloc.dart';
+import 'package:ditonton/presentation/bloc/tv/popular%20tv/popular_tv_bloc.dart';
 import 'package:ditonton/presentation/pages/tv_series/popular_tv_page.dart';
 import 'package:ditonton/presentation/pages/tv_series/top_rated_tv.dart';
 import 'package:ditonton/presentation/pages/tv_series/tv_detail_page.dart';
@@ -26,9 +27,11 @@ class _TvHomePageState extends State<TvHomePage> {
   void initState() {
     super.initState();
     Future.microtask(() => Provider.of<TvListNotifier>(context, listen: false)
-      ..fetchPopularTv()
       ..fetchTopRatedTv());
-    Future.microtask(() => context.read<TvOnAirBloc>().add(LoadOnAirTv()));
+    Future.microtask(() { 
+    context.read<TvOnAirBloc>().add(LoadOnAirTv());
+    context.read<PopularTvBloc>().add(LoadPopularTv());
+  });
   }
 
   @override
@@ -77,15 +80,17 @@ class _TvHomePageState extends State<TvHomePage> {
               onTap: () => {
                 Navigator.pushNamed(context, PopularTvPage.ROUTE_NAME)
                 }),
-           Consumer<TvListNotifier>(builder: (context, data, _) {
-            final state = data.popularTvState;
-            if (state == RequestState.Loading) {
+           BlocBuilder<PopularTvBloc, PopularTvState>
+           (builder: (context, state) {
+            if (state is PopularTvLoading) {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (state == RequestState.Loaded) {
-              return TvList(data.popularTv);
-            } else {
+            } else if (state is PopularTvHasData) {
+              return TvList(state.popularTvData);
+            } else if (state is PopularTvError) {
+              return Text(state.message);
+            } else  {
               return Text('Failed');
             }
           }),

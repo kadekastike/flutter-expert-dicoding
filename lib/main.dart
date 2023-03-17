@@ -1,6 +1,7 @@
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/utils.dart';
 import 'package:ditonton/presentation/bloc/tv/on%20the%20air/tv_on_air_bloc.dart';
+import 'package:ditonton/presentation/bloc/tv/popular%20tv/popular_tv_bloc.dart';
 import 'package:ditonton/presentation/pages/about_page.dart';
 import 'package:ditonton/presentation/pages/movies/movie_detail_page.dart';
 import 'package:ditonton/presentation/pages/movies/home_movie_page.dart';
@@ -65,12 +66,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => di.locator<TvListNotifier>()
         ),
-        // ChangeNotifierProvider(
-        //   create: (_) => di.locator<OnTheAirNotifier>()
-        //   ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<PopularTvNotifier>()
-        ),
         ChangeNotifierProvider(
           create: (_) => di.locator<TopRatedTvNotifier>()
         ),
@@ -84,7 +79,9 @@ class MyApp extends StatelessWidget {
           create: (_) => di.locator<WatchlistTvNotifier>()
         ),
         BlocProvider(
-          create: (_) => di.locator<TvOnAirBloc>())
+          create: (_) => di.locator<TvOnAirBloc>()),
+        BlocProvider(
+          create: (_) => di.locator<PopularTvBloc>())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
