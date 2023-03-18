@@ -2,6 +2,7 @@ import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/utils.dart';
 import 'package:ditonton/presentation/bloc/movies/now_playing/now_playing_bloc.dart';
 import 'package:ditonton/presentation/bloc/movies/popular_movies/popular_movies_bloc.dart';
+import 'package:ditonton/presentation/bloc/movies/search_movies/search_movies_bloc.dart';
 import 'package:ditonton/presentation/bloc/movies/top_rated_movies/top_rated_movies_bloc.dart';
 import 'package:ditonton/presentation/bloc/tv/detail_tv/tv_detail_bloc.dart';
 import 'package:ditonton/presentation/bloc/tv/on_the_air/tv_on_air_bloc.dart';
@@ -51,8 +52,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => di.locator<MovieDetailNotifier>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<MovieSearchNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<SearchMoviesBloc>(),
         ),
         BlocProvider(
           create: (_) => di.locator<TopRatedMoviesBloc>(),
@@ -104,6 +105,7 @@ class MyApp extends StatelessWidget {
                 settings: settings,
               );
             case SearchPage.ROUTE_NAME:
+              return MaterialPageRoute(builder: (_) => SearchPage());
             case AboutPage.ROUTE_NAME:
               return MaterialPageRoute(builder: (_) => AboutPage());
             case TvHomePage.ROUTE_NAME:

@@ -30,6 +30,7 @@ import 'package:ditonton/domain/usecases/tv_series/save_watchlist_tv.dart';
 import 'package:ditonton/domain/usecases/tv_series/search_tv.dart';
 import 'package:ditonton/presentation/bloc/movies/now_playing/now_playing_bloc.dart';
 import 'package:ditonton/presentation/bloc/movies/popular_movies/popular_movies_bloc.dart';
+import 'package:ditonton/presentation/bloc/movies/search_movies/search_movies_bloc.dart';
 import 'package:ditonton/presentation/bloc/movies/top_rated_movies/top_rated_movies_bloc.dart';
 import 'package:ditonton/presentation/bloc/tv/detail_tv/tv_detail_bloc.dart';
 import 'package:ditonton/presentation/bloc/tv/on_the_air/tv_on_air_bloc.dart';
@@ -38,7 +39,6 @@ import 'package:ditonton/presentation/bloc/tv/top_rated_tv/top_rated_tv_bloc.dar
 import 'package:ditonton/presentation/bloc/tv/watchlist_tv/watchlist_tv_bloc.dart';
 import 'package:ditonton/presentation/provider/movies/movie_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/movie_list_notifier.dart';
-import 'package:ditonton/presentation/provider/movies/movie_search_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/watchlist_movie_notifier.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/io_client.dart';
@@ -70,8 +70,8 @@ void init() {
     ),
   );
   locator.registerFactory(
-    () => MovieSearchNotifier(
-      searchMovies: locator(),
+    () => SearchMoviesBloc(
+      locator(),
     ),
   );
   locator.registerFactory(
