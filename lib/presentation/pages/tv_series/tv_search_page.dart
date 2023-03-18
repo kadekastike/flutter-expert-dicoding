@@ -1,8 +1,7 @@
-import 'package:ditonton/presentation/provider/tv_series/tv_search_notifier.dart';
+import 'package:ditonton/presentation/bloc/tv/search_tv/search_tv_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/constants.dart';
-import '../../../common/state_enum.dart';
 import '../../widgets/tv_card_list.dart';
 
 class SearchTvPage extends StatelessWidget {
@@ -24,8 +23,7 @@ class SearchTvPage extends StatelessWidget {
           children: [
             TextField(
               onSubmitted: (query) {
-                Provider.of<SearchTvNotifier>(context, listen: false)
-                  .fetchSearchResult(query);
+                context.read<SearchTvBloc>().add(OnQueryChanged(query));
               },
               decoration: InputDecoration(
                 hintText: 'Search title',
@@ -39,25 +37,39 @@ class SearchTvPage extends StatelessWidget {
               'Search Result',
               style: kHeading6,
             ),
-            Consumer<SearchTvNotifier>(
-              builder: (context, data, child) {
-                if (data.state == RequestState.Loading) {
+            BlocBuilder<SearchTvBloc, SearchTvState>(
+              builder: (context, state) {
+                if (state is SearchTvLoading) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
-                } else if (data.state == RequestState.Loaded) {
-                  final result = data.searchResult;
+                } else if (state is SearchTvHasData) {
                   return Expanded(
                     child: ListView.builder(
                       padding: const EdgeInsets.all(8),
                       itemBuilder: (context, index) {
-                        final tv = data.searchResult[index];
+                        final tv = state.tv[index];
                         return TvCard(tv);
                       },
-                      itemCount: result.length,
+                      itemCount: state.tv.length,
                     ),
                   );
-                } else {
+                } else if(state is SearchTvEmpty) {
+                  return Center(child: Column (
+                    children : [
+                      SizedBox(height: 8.0,),
+                      Text(state.message),
+                    ]
+                  ));
+                } else if (state is SearchTvError) {
+                  return Center(child: Column (
+                    children : [
+                      SizedBox(height: 8.0,),
+                      Text(state.message),
+                    ]
+                  ));
+                }
+                else {
                   return Expanded(
                     child: Container(),
                   );
