@@ -32,14 +32,13 @@ import 'package:ditonton/presentation/bloc/tv/detail_tv/tv_detail_bloc.dart';
 import 'package:ditonton/presentation/bloc/tv/on_the_air/tv_on_air_bloc.dart';
 import 'package:ditonton/presentation/bloc/tv/search_tv/search_tv_bloc.dart';
 import 'package:ditonton/presentation/bloc/tv/top_rated_tv/top_rated_tv_bloc.dart';
+import 'package:ditonton/presentation/bloc/tv/watchlist_tv/watchlist_tv_bloc.dart';
 import 'package:ditonton/presentation/provider/movies/movie_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/movie_list_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/movie_search_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/popular_movies_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/top_rated_movies_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/watchlist_movie_notifier.dart';
-import 'package:ditonton/presentation/provider/tv_series/tv_search_notifier.dart';
-import 'package:ditonton/presentation/provider/tv_series/watchlist_tv_notifier.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/io_client.dart';
 import 'presentation/bloc/tv/popular_tv/popular_tv_bloc.dart';
@@ -116,8 +115,8 @@ void init() {
     ),
   );
   locator.registerFactory(
-    () => WatchlistTvNotifier(
-      getWatchlistTv: locator())
+    () => WatchlistTvBloc(
+      locator())
     );
 
   // use case

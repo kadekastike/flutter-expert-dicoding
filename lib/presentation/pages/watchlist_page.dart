@@ -1,5 +1,6 @@
-import 'package:ditonton/presentation/provider/tv_series/watchlist_tv_notifier.dart';
+import 'package:ditonton/presentation/bloc/tv/watchlist_tv/watchlist_tv_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import '../../common/state_enum.dart';
 import '../../common/utils.dart';
@@ -23,9 +24,8 @@ class _WatchlistPageState extends State<WatchlistPage> with RouteAware {
     Future.microtask(() {
       Provider.of<WatchlistMovieNotifier>(context, listen: false)
           .fetchWatchlistMovies();
-      Provider.of<WatchlistTvNotifier>(context, listen: false)
-          .fetchWatchlistTv();
     });
+    Future.microtask(() => context.read<WatchlistTvBloc>().add(LoadWatchlistTv()));
   }
 
   @override
@@ -37,7 +37,7 @@ class _WatchlistPageState extends State<WatchlistPage> with RouteAware {
   void didPopNext() {
     Provider.of<WatchlistMovieNotifier>(context, listen: false)
         .fetchWatchlistMovies();
-    Provider.of<WatchlistTvNotifier>(context, listen: false).fetchWatchlistTv();
+    Future.microtask(() => context.read<WatchlistTvBloc>().add(LoadWatchlistTv()));
   }
 
   @override
@@ -104,30 +104,33 @@ class TvWatchlist extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Consumer<WatchlistTvNotifier>(
-        builder: (context, data, child) {
-          if (data.watchlistTvState == RequestState.Loading) {
+      child: BlocBuilder<WatchlistTvBloc, WatchlististTvState>(
+        builder: (context, state) {
+          if (state is WatchlistTvLoading) {
             return Center(
               child: CircularProgressIndicator(),
             );
-          } else if (data.watchlistTvState == RequestState.Loaded) {
-            if (data.watchlistTv.isEmpty) {
-              return Center(
-                child: Text("Tidak Ada Watchlist"),
-              );
-            } else {
+          } else if (state is WatchlistTvHasData) {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  final tv = data.watchlistTv[index];
-                  return TvCard(tv);
+                  final data = state.tv[index];
+                  return TvCard(data);
                 },
-                itemCount: data.watchlistTv.length,
-              );
-            }
-          } else {
+                itemCount: state.tv.length,
+              ); 
+          } else if (state is WatchlistTvError) {
+            return Center(
+              child: Text(state.message),
+            );
+          } else if (state is WatchlistTvEmpty) {
+            return Center(
+              child: Text(state.message),
+            );
+          }
+          else {
             return Center(
               key: Key('error_message'),
-              child: Text(data.message),
+              child: Text('Failed'),
             );
           }
         },

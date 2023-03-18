@@ -1,9 +1,7 @@
-import 'package:ditonton/presentation/pages/movies/home_movie_page.dart';
 import 'package:ditonton/presentation/pages/watchlist_page.dart';
 import 'package:flutter/material.dart';
 import '../pages/about_page.dart';
 import '../pages/tv_series/home_tv_page.dart';
-import '../pages/watchlist_movies_page.dart';
 
 class CustomNavigationDrawer extends StatelessWidget {
   const CustomNavigationDrawer({Key? key}) : super(key: key);

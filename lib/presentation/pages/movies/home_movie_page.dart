@@ -1,13 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/domain/entities/movie.dart';
-import 'package:ditonton/presentation/pages/about_page.dart';
 import 'package:ditonton/presentation/pages/movies/movie_detail_page.dart';
 import 'package:ditonton/presentation/pages/movies/popular_movies_page.dart';
 import 'package:ditonton/presentation/pages/movies/search_page.dart';
 import 'package:ditonton/presentation/pages/movies/top_rated_movies_page.dart';
-import 'package:ditonton/presentation/pages/tv_series/home_tv_page.dart';
-import 'package:ditonton/presentation/pages/watchlist_movies_page.dart';
 import 'package:ditonton/presentation/provider/movies/movie_list_notifier.dart';
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/presentation/widgets/navigation_drawer.dart';
