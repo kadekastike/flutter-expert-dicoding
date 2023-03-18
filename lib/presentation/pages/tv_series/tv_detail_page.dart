@@ -23,7 +23,7 @@ class _DetailTvPageState extends State<DetailTvPage> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      context.read<TvDetailBloc>()..add(LoadTvDetail(widget.id));
+      context.read<TvDetailBloc>().add(LoadTvDetail(widget.id));
     });
   }
 
