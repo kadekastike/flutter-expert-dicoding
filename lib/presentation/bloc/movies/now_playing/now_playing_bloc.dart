@@ -15,7 +15,7 @@ class NowPlayingBloc extends Bloc<NowPlayingEvent, NowPlayingState> {
       final result = await _getNowPlayingMovies.execute();
       result.fold(
         (failure) => emit(NowPlayingError(failure.message)),
-        (tvData) => emit(NowPlayingHasData(tvData)),
+        (moviesData) => emit(NowPlayingHasData(moviesData)),
       );
     });
   }
