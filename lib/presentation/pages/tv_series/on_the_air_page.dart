@@ -1,4 +1,4 @@
-import 'package:ditonton/presentation/bloc/tv/on%20the%20air/tv_on_air_bloc.dart';
+import 'package:ditonton/presentation/bloc/tv/on_the_air/tv_on_air_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../widgets/tv_card_list.dart';

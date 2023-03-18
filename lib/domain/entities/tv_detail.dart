@@ -5,7 +5,7 @@ import 'genre.dart';
 
 class TvDetail extends Equatable {
     TvDetail({
-        required this.backdropPath,
+        this.backdropPath,
         required this.episodeRunTime,
         required this.firstAirDate,
         required this.genres,
@@ -27,7 +27,7 @@ class TvDetail extends Equatable {
         required this.voteCount,
     });
 
-    String backdropPath;
+    String? backdropPath;
     List<int> episodeRunTime;
     String firstAirDate;
     List<Genre> genres;

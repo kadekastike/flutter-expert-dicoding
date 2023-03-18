@@ -1,4 +1,4 @@
-import 'package:ditonton/presentation/bloc/tv/top%20rated%20tv/top_rated_tv_bloc.dart';
+import 'package:ditonton/presentation/bloc/tv/top_rated_tv/top_rated_tv_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../widgets/tv_card_list.dart';

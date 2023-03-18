@@ -28,22 +28,20 @@ import 'package:ditonton/domain/usecases/tv_series/get_watchlist_tv.dart';
 import 'package:ditonton/domain/usecases/tv_series/remove_tv_watchlist.dart';
 import 'package:ditonton/domain/usecases/tv_series/save_watchlist_tv.dart';
 import 'package:ditonton/domain/usecases/tv_series/search_tv.dart';
-import 'package:ditonton/presentation/bloc/tv/on%20the%20air/tv_on_air_bloc.dart';
-import 'package:ditonton/presentation/bloc/tv/top%20rated%20tv/top_rated_tv_bloc.dart';
+import 'package:ditonton/presentation/bloc/tv/detail_tv/tv_detail_bloc.dart';
+import 'package:ditonton/presentation/bloc/tv/on_the_air/tv_on_air_bloc.dart';
+import 'package:ditonton/presentation/bloc/tv/top_rated_tv/top_rated_tv_bloc.dart';
 import 'package:ditonton/presentation/provider/movies/movie_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/movie_list_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/movie_search_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/popular_movies_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/top_rated_movies_notifier.dart';
 import 'package:ditonton/presentation/provider/movies/watchlist_movie_notifier.dart';
-import 'package:ditonton/presentation/provider/tv_series/tv_detail_notifier.dart';
-import 'package:ditonton/presentation/provider/tv_series/tv_list_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series/tv_search_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series/watchlist_tv_notifier.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/io_client.dart';
-
-import 'presentation/bloc/tv/popular tv/popular_tv_bloc.dart';
+import 'presentation/bloc/tv/popular_tv/popular_tv_bloc.dart';
 
 final locator = GetIt.instance;
 
@@ -87,14 +85,6 @@ void init() {
   );
 
   locator.registerFactory(
-    () => TvListNotifier(
-      getOnAirTv: locator(),
-      getPopularTv: locator(),
-      getTopRatedTv: locator(),
-    ), 
-  );
-
-  locator.registerFactory(
     () => TvOnAirBloc(
       locator()
     ),
@@ -109,15 +99,15 @@ void init() {
       locator(),
     ),
   );
+
   locator.registerFactory(
-    () => TvDetailNotifier(
+    () => TvDetailBloc(
       getDetailTv: locator(), 
-      getTvRecommendations: locator(),
-      getTvWatchlistStatus: locator(),
-      saveWatchlistTV: locator(),
-      removeWatchlistTv: locator()
-      ),
-  );
+      getTvRecommendations: locator(), 
+      saveWatchlistTV: locator(), 
+      removeWatchlistTv: locator(), 
+      getTvWatchlistStatus: locator())
+    );
 
   locator.registerFactory(
     () => SearchTvNotifier(

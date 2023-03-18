@@ -5,7 +5,7 @@ import '../../domain/entities/tv_detail.dart';
 
 class TvDetailResponse extends Equatable{
     TvDetailResponse({
-        required this.backdropPath,
+        this.backdropPath,
         required this.episodeRunTime,
         required this.firstAirDate,
         required this.genres,
@@ -31,7 +31,7 @@ class TvDetailResponse extends Equatable{
         required this.voteCount,
     });
 
-    String backdropPath;
+    String? backdropPath;
     List<int> episodeRunTime;
     String firstAirDate;
     List<GenreModel> genres;
