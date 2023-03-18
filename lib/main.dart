@@ -1,5 +1,6 @@
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/utils.dart';
+import 'package:ditonton/presentation/bloc/movies/now_playing/now_playing_bloc.dart';
 import 'package:ditonton/presentation/bloc/tv/detail_tv/tv_detail_bloc.dart';
 import 'package:ditonton/presentation/bloc/tv/on_the_air/tv_on_air_bloc.dart';
 import 'package:ditonton/presentation/bloc/tv/popular_tv/popular_tv_bloc.dart';
@@ -45,6 +46,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => di.locator<MovieListNotifier>(),
         ),
+        BlocProvider(
+          create: (_) => di.locator<NowPlayingBloc>()),
         ChangeNotifierProvider(
           create: (_) => di.locator<MovieDetailNotifier>(),
         ),
