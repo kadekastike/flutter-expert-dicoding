@@ -1,5 +1,6 @@
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/utils.dart';
+import 'package:ditonton/data/datasources/ssl_pinning.dart';
 import 'package:ditonton/presentation/bloc/movies/movie_detail/movie_detail_bloc.dart';
 import 'package:ditonton/presentation/bloc/movies/movies_watchlist/movie_watchlist_bloc.dart';
 import 'package:ditonton/presentation/bloc/movies/now_playing/now_playing_bloc.dart';
@@ -35,6 +36,7 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SSLPinning.init();
     await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
